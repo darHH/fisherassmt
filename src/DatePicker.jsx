@@ -6,9 +6,9 @@ function DatePicker() {
     const createAvailableMap = () => {
         const availableMap = new Map();
         
-        // takes in (MM, YYYY, [array of DD]) to add which dates are available 
+        // Takes in (MM, YYYY, [array of DD]) to add which dates are available 
         const addDates = (month, year, dates) => {
-            // key is in MMYYYY
+            // Key is in MMYYYY
             const key = `${String(month).padStart(2, "0")}${year}`;
         
             // Add or update the key in the Map
@@ -16,7 +16,7 @@ function DatePicker() {
             availableMap.set(key, paddedDates);
         };
         
-        // check if date is available (when rendering the date table)
+        // Check if date is available (when rendering the date table)
         const isAvailable = (month, year, date) => {
             const key = `${String(month).padStart(2, "0")}${year}`;
             const dates = availableMap.get(key);
@@ -28,11 +28,11 @@ function DatePicker() {
 
     const {addDates, isAvailable } = createAvailableMap();
 
-    // add available dates
+    // Add available dates
     addDates(1, 2025, [1, 15, 20]);
     addDates(2, 2025, [10, 14, 12]);
 
-    // choose the first available date to display
+    // Choose the first available date to display
     const firstChosenDate = (startDate) => {
         let currentDate = startDate;
 
@@ -176,7 +176,7 @@ function DatePicker() {
     }
 
     return (
-        // main Date Picker button
+        // Main Date Picker button
         <div>
             <button 
                 className="bg-transparent text-left text-white font-thin py-2 px-2 border-[0.5px] border-white rounded w-72"
