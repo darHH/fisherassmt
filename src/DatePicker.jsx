@@ -32,11 +32,10 @@ function DatePicker() {
     addDates(1, 2025, [1, 15, 20]);
     addDates(2, 2025, [10, 14, 12]);
 
-      // Helper to find the first available date
+    // choose the first available date to display
     const firstChosenDate = (startDate) => {
         let currentDate = startDate;
 
-        // Iterate until a availableed date is found
         while (
         !isAvailable(
             currentDate.month() + 1,
@@ -57,37 +56,32 @@ function DatePicker() {
     const [chosenDate, setChosenDate] = useState(firstChosenDate(dayjs()));
 
     const monthArray = (currentDate) => {
-        // Extract month and year from the currentDate object
-        const month = currentDate.month(); // Month is 0-based in Day.js
-        const year = currentDate.year();
-      
-        // Get the 1st day of the month
+        // Get first day of the month
         const firstDay = currentDate.startOf("month");
-        const dayOfWeek = (firstDay.day() + 6) % 7; // Adjust to make Monday = 0
-        const daysInMonth = firstDay.daysInMonth(); // Total number of days in the month
+        const dayOfWeek = (firstDay.day() + 6) % 7; 
+        const daysInMonth = firstDay.daysInMonth();
       
-        const matrix = []; // Array to hold the weeks
-        let week = Array(dayOfWeek).fill(null); // Start the first week with empty slots
+        // 2D matrix where rows are dates and columns reprsent days mon to fri
+        const matrix = []; 
+        let week = Array(dayOfWeek).fill(null);
       
         // Fill in the dates
         for (let day = 1; day <= daysInMonth; day++) {
           week.push(day);
       
-          // If the week is complete (7 days) or it's the last day, add it to the matrix
           if (week.length === 7 || day === daysInMonth) {
             matrix.push(week);
-            week = []; // Start a new week
+            week = []; 
           }
         }
       
         return matrix;
       };
 
-      // Handlers to switch months
+      // To switch between months
     const previousMonth = () => {
         setCurrentDate(currentDate.subtract(1, "month"));
     };
-
     const nextMonth = () => {
         setCurrentDate(currentDate.add(1, "month"));
     };
@@ -96,24 +90,27 @@ function DatePicker() {
         setDateShown((prevState) => !prevState)
     }
 
-      // Handle date selection
+    // If user clicks on a date, chosenDate will now hold the page's date
       const handleDateClick = (date) => {
-        // Check if the date is availableed
         if (isAvailable(currentDate.month() + 1, currentDate.year(), date)) {
-          // Update the currentDate state with the clicked date
           setChosenDate(currentDate.date(date));
         } else {
             alert("Invalid Date Chosen!")
         }
       };
 
+    // To display the date picker
     const renderDateShown = () => {
 
         const dates = monthArray(currentDate);
 
         if(!isDateShown) return null;
         return (
-            <div className="bg-gray-800 h-70" >
+
+            // Date Picker Dropdown Display
+            <div className="bg-gray-800 rounded-md pb-3" >
+
+                {/* Date Picker Header - back arrow, month and year heading, next arrow */}
                 <div className="flex items-center justify-between p-4">
                     <button className="text-white" onClick={previousMonth}>
                     <span className="">&larr;</span>
@@ -128,6 +125,7 @@ function DatePicker() {
                     </button>
                 </div>
 
+                {/* Date Picker Table - table header are the days and table body are the date numbers */}
                 <div className="flex justify-center items-center">
                     <table className="table-auto">
                         <thead>
@@ -178,11 +176,11 @@ function DatePicker() {
     }
 
     return (
+        // main Date Picker button
         <div>
             <button 
                 className="bg-transparent text-left text-white font-thin py-2 px-2 border-[0.5px] border-white rounded w-72"
                 onClick = {toggleDateShown}
-                
             >
                 {chosenDate.format("DD MMM YYYY")}
             </button>
